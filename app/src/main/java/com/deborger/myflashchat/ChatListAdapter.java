@@ -2,7 +2,9 @@ package com.deborger.myflashchat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.opengl.GLES10;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +104,9 @@ public class ChatListAdapter extends BaseAdapter {
         final InstantMessage message = getItem(i);
         final ViewHolder holder = (ViewHolder) view.getTag();
 
+        boolean isMe = message.getAuthor().equals(mDisplayName);
+        setChatRowAppearance(isMe,holder);
+
         String author = message.getAuthor();
         holder.authorName.setText(author);
 
@@ -109,6 +114,21 @@ public class ChatListAdapter extends BaseAdapter {
         holder.body.setText(msg);
 
         return view;
+    }
+
+    private void setChatRowAppearance(boolean isItMe, ViewHolder holder) {
+        if (isItMe) {
+            holder.params.gravity = Gravity.END;
+            holder.authorName.setTextColor(Color.GREEN);
+            holder.body.setBackgroundResource(R.drawable.bubble2);
+        } else {
+            holder.params.gravity = Gravity.START;
+            holder.authorName.setTextColor(Color.BLUE);
+            holder.body.setBackgroundResource(R.drawable.bubble1);
+        }
+
+        holder.authorName.setLayoutParams(holder.params);
+        holder.body.setLayoutParams(holder.params);
     }
 
     public void cleanup() {
